@@ -1,44 +1,65 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+import { useSepedaContext } from "../context/SepedaContext"; // Import context
 
 const JenisSepeda = () => {
+  const navigate = useNavigate();
+  const { sepedaList, removeSepeda } = useSepedaContext(); // Ambil fungsi removeSepeda dari context
+
+  // Fungsi untuk mengedit sepeda
+  const handleEdit = (id) => {
+    navigate(`/EditSepeda/${id}`); // Arahkan ke halaman EditSepeda dengan membawa id
+  };
+
+  // Fungsi untuk menghapus sepeda
+  const handleDelete = (id) => {
+    removeSepeda(id); // Menggunakan fungsi removeSepeda untuk menghapus sepeda berdasarkan id
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Jenis Sepeda</h2>
-      <button style={styles.addButton}>Tambah</button>
-      <div style={styles.tableWrapper}>
-        <table style={styles.table}>
-          <thead>
-            <tr>
-              <th style={styles.th}>No</th>
-              <th style={styles.th}>Nama Sepeda Listrik</th>
-              <th style={styles.th}>Merek</th>
-              <th style={styles.th}>Jumlah</th>
-              <th style={styles.th}>Aksi</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style={styles.td}>1</td>
-              <td style={styles.td}>Sepeda</td>
-              <td style={styles.td}>mmm</td>
-              <td style={styles.td}>3</td>
+      <button style={styles.Button} onClick={() => navigate("/TambahSepeda")}>
+        Tambah
+      </button>
+      <table style={styles.table}>
+        <thead>
+          <tr>
+            <th style={styles.th}>No</th>
+            <th style={styles.th}>Nama Sepeda</th>
+            <th style={styles.th}>Merek</th>
+            <th style={styles.th}>Jumlah</th>
+            <th style={styles.th}>Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sepedaList.map((sepeda, index) => (
+            <tr key={sepeda.id}>
+              <td style={styles.td}>{index + 1}</td>
+              <td style={styles.td}>{sepeda.namaSepeda}</td>
+              <td style={styles.td}>{sepeda.merek}</td>
+              <td style={styles.td}>{sepeda.jumlah}</td>
               <td style={styles.td}>
-                <button style={styles.editButton}>Edit</button>
-                <button style={styles.deleteButton}>Delete</button>
+                <button style={styles.editButton} onClick={() => handleEdit(sepeda.id)}>
+                  Edit
+                </button>
+                <button style={styles.deleteButton} onClick={() => handleDelete(sepeda.id)}>
+                  Delete
+                </button>
               </td>
             </tr>
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
 
 const styles = {
   container: {
-    marginLeft: "200px", // Offset untuk sidebar
+    marginLeft: "200px",
     padding: "20px",
-    backgroundColor: "#fcefe3", // Warna latar belakang lembut
+    backgroundColor: "#fcefe3",
     minHeight: "100vh",
   },
   heading: {
@@ -46,29 +67,15 @@ const styles = {
     fontWeight: "bold",
     marginBottom: "20px",
   },
-  addButton: {
-    backgroundColor: "#ff6b6b",
-    color: "white",
-    border: "none",
-    padding: "10px 20px",
-    borderRadius: "20px",
-    cursor: "pointer",
-    marginBottom: "20px",
-    fontWeight: "bold",
-  },
-  tableWrapper: {
-    borderTop: "5px solid #a855f7", // Garis ungu di atas tabel
-    borderRadius: "10px",
-    overflow: "hidden", // Agar border terlihat rapi
-    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Bayangan tabel
-  },
   table: {
+    boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+    borderTop: "5px solid #a855f7",
     width: "100%",
     borderCollapse: "collapse",
-    backgroundColor: "#fff", // Warna dasar tabel
+    backgroundColor: "#fff",
   },
   th: {
-    backgroundColor: "#f9f9f9", // Warna header tabel
+    backgroundColor: "#f9f9f9",
     fontWeight: "bold",
     textAlign: "left",
     padding: "10px",
@@ -79,6 +86,15 @@ const styles = {
     textAlign: "left",
     borderBottom: "1px solid #ddd",
   },
+  Button: {
+    backgroundColor: "#ff3b30",
+    color: "white",
+    border: "none",
+    padding: "5px 10px",
+    borderRadius: "5px",
+    cursor: "pointer",
+    marginBottom: "10px",
+  },
   editButton: {
     backgroundColor: "#4caf50",
     color: "white",
@@ -86,10 +102,10 @@ const styles = {
     padding: "5px 10px",
     borderRadius: "5px",
     cursor: "pointer",
-    marginRight: "5px",
+    marginRight: "10px",
   },
   deleteButton: {
-    backgroundColor: "#f44336",
+    backgroundColor: "#ff3b30",
     color: "white",
     border: "none",
     padding: "5px 10px",

@@ -1,6 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Pengguna = () => {
+  // State untuk menyimpan daftar pengguna
+  const [penggunaList, setPenggunaList] = useState([
+    { id: 1, nama: "Key Alderan", username: "keyalderan", email: "keyalderan@gmail.com", password: "fufufafa" },
+    // Tambahkan lebih banyak pengguna jika diperlukan
+  ]);
+
+  // Fungsi untuk menangani penghapusan pengguna
+  const handleDelete = (id) => {
+    const updatedList = penggunaList.filter((pengguna) => pengguna.id !== id);
+    setPenggunaList(updatedList);
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Pengguna</h2>
@@ -17,16 +29,20 @@ const Pengguna = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td style={styles.td}>1</td>
-              <td style={styles.td}>Key Alderan</td>
-              <td style={styles.td}>Key Alderan</td>
-              <td style={styles.td}>keyalderan@gmail.com</td>
-              <td style={styles.td}>fufufafa</td>
-              <td style={styles.td}>
-                <button style={styles.verifyButton}>Delete</button>
-              </td>
-            </tr>
+            {penggunaList.map((pengguna) => (
+              <tr key={pengguna.id}>
+                <td style={styles.td}>{pengguna.id}</td>
+                <td style={styles.td}>{pengguna.nama}</td>
+                <td style={styles.td}>{pengguna.username}</td>
+                <td style={styles.td}>{pengguna.email}</td>
+                <td style={styles.td}>{pengguna.password}</td>
+                <td style={styles.td}>
+                  <button style={styles.verifyButton} onClick={() => handleDelete(pengguna.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -48,7 +64,7 @@ const styles = {
   },
   tableWrapper: {
     borderTop: "5px solid #a855f7", // Garis ungu di atas tabel
-    borderRadius: "10px",
+    // borderRadius: "10px",
     overflow: "hidden", // Agar border terlihat rapi
     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Bayangan tabel
   },

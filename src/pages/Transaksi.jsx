@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Transaksi = () => {
+  // State untuk menyimpan status transaksi
+  const [status, setStatus] = useState("Tertunda");
+
+  // Fungsi untuk mengubah status menjadi "Lunas"
+  const handleVerifikasi = () => {
+    setStatus("Lunas");
+  };
+
   return (
     <div style={styles.container}>
       <h2 style={styles.heading}>Transaksi</h2>
@@ -22,9 +30,14 @@ const Transaksi = () => {
               <td style={styles.td}>Key Alderan</td>
               <td style={styles.td}>12-11-2024</td>
               <td style={styles.td}>70.000</td>
-              <td style={styles.td}>Tertunda</td>
+              <td style={styles.td}>{status}</td> {/* Tampilkan status */}
               <td style={styles.td}>
-                <button style={styles.verifyButton}>Verifikasi</button>
+                <button
+                  style={styles.verifyButton}
+                  onClick={handleVerifikasi} // Tambahkan handler klik
+                >
+                  Verifikasi
+                </button>
               </td>
             </tr>
           </tbody>
@@ -48,7 +61,6 @@ const styles = {
   },
   tableWrapper: {
     borderTop: "5px solid #a855f7", // Garis ungu di atas tabel
-    borderRadius: "10px",
     overflow: "hidden", // Agar border terlihat rapi
     boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Bayangan tabel
   },

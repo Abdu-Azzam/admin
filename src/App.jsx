@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { SepedaProvider } from "./context/SepedaContext";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import Dashboard from "./pages/Dashboard";
@@ -7,35 +8,82 @@ import JenisSepeda from "./pages/JenisSepeda";
 import Transaksi from "./pages/Transaksi";
 import Pengguna from "./pages/pengguna";
 import Loginadmin from "./pages/Loginadmin";
+import TambahSepeda from "./pages/TambahSepeda";
+import EditSepeda from "./pages/EditSepeda";
 
-const AppContent = () => {
-  const location = useLocation();
-  const noLayoutPages = ["/"];
-  const isNoLayoutPage = noLayoutPages.includes(location.pathname);
-
+// Layout untuk halaman dashboard (dengan Sidebar dan Header)
+const DashboardLayout = ({ children }) => {
   return (
     <div style={{ display: "flex" }}>
-      {/* Tampilkan Sidebar jika halaman bukan no-layout */}
-      {!isNoLayoutPage && <Sidebar />}
-      <div style={{ flexGrow: 1, marginTop: isNoLayoutPage ? "0" : "70px" }}>
-        {/* Tampilkan Header jika halaman bukan no-layout */}
-        {!isNoLayoutPage && <Header />}
-        <Routes>
-          <Route path="/" element={<Loginadmin />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/jenis-sepeda" element={<JenisSepeda />} />
-          <Route path="/transaksi" element={<Transaksi />} />
-          <Route path="/pengguna" element={<Pengguna />} />
-        </Routes>
+      <Sidebar />
+      <div style={{ flexGrow: 1, marginTop: "70px" }}>
+        <Header />
+        {children}
       </div>
     </div>
   );
 };
 
+// Komponen Utama Aplikasi
 const App = () => {
   return (
     <Router>
-      <AppContent />
+      <SepedaProvider>
+        <Routes>
+          {/* Halaman Login */}
+          <Route path="/" element={<Loginadmin />} />
+
+          {/* Halaman Dashboard */}
+          <Route
+            path="/dashboard"
+            element={
+              <DashboardLayout>
+                <Dashboard />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/jenis-sepeda"
+            element={
+              <DashboardLayout>
+                <JenisSepeda />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/transaksi"
+            element={
+              <DashboardLayout>
+                <Transaksi />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/pengguna"
+            element={
+              <DashboardLayout>
+                <Pengguna />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/TambahSepeda"
+            element={
+              <DashboardLayout>
+                <TambahSepeda />
+              </DashboardLayout>
+            }
+          />
+          <Route
+            path="/EditSepeda/:id"
+            element={
+              <DashboardLayout>
+                <EditSepeda />
+              </DashboardLayout>
+            }
+          />
+        </Routes>
+      </SepedaProvider>
     </Router>
   );
 };
